@@ -1,5 +1,6 @@
-package aiss.videominer.model;
+package aiss.VideoMiner.src.main.java.aiss.videominer.model;
 
+import aiss.restclient.model.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

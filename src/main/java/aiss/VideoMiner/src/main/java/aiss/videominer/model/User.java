@@ -1,4 +1,4 @@
-package aiss.videominer.model;
+package aiss.VideoMiner.src.main.java.aiss.videominer.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
