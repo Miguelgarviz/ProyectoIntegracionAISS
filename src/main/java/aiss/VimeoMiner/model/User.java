@@ -3,6 +3,8 @@ package aiss.VimeoMiner.model;
 
 import java.util.List;
 import javax.annotation.Generated;
+
+import aiss.VimeoMiner.model.opcional.Capabilities;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
