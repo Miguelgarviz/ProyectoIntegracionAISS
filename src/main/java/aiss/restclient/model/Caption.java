@@ -1,22 +1,31 @@
 package aiss.restclient.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
+@Entity
+@Table(name = "caption")
 public class Caption {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "name")
+    @NotEmpty(message = "Please provide a name")
     private String name;
+
+    @Column(name = "language")
+    @NotEmpty(message = "Please provide a language")
     private String language;
 
-    public Caption(String id, String name, String language){
-        this.id = id;
+    public Caption(){
+
+    }
+
+    public Caption(String name, String language){
         this.name = name;
         this.language = language;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {
