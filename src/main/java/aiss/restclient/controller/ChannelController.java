@@ -2,6 +2,7 @@ package aiss.restclient.controller;
 
 import aiss.restclient.exception.ChannelNotFoundException;
 import aiss.restclient.model.Channel;
+import aiss.restclient.model.Video;
 import aiss.restclient.repository.ChannelRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/channels")
+@RequestMapping("/videominer/channels")
 public class ChannelController {
 
     @Autowired
     ChannelRepository channelRepository;
+
+    @Autowired
+    VideoController videoController;
 
     //GET http://localhost:8080/api/v1/channels
     @GetMapping
@@ -35,8 +39,17 @@ public class ChannelController {
 
     //POST http://localhost:8080/api/v1/channels
     @PostMapping
-    public Channel create(@Valid @RequestBody Channel channel){
-        return channelRepository.save(new Channel(channel.getName(), channel.getDescription(), channel.getCreatedTime()));
+    public Channel create(@Valid @RequestBody Channel newChannel){
+        Channel channel = channelRepository.save(new Channel(newChannel.getName(), newChannel.getDescription(), newChannel.getCreatedTime()));
+        System.out.println("Channel created: " + newChannel.getVideoList());
+        /*
+        List<Video> newVideos = newChannel.getVideoList();
+        for(Video video : newVideos){
+            Video vid = videoController.create(new Video(video.getName(),video.getDescription(),video.getReleaseTime()));
+            channel.getVideoList().add(vid);
+        }
+         */
+        return channel;
     }
 
     //PUT http://localhost:8080/api/v1/channels/{channelId}
