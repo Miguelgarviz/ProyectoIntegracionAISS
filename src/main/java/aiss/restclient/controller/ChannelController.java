@@ -34,13 +34,13 @@ public class ChannelController {
     }
 
     //POST http://localhost:8080/api/v1/channels
-    @GetMapping
+    @PostMapping
     public Channel create(@Valid @RequestBody Channel channel){
         return channelRepository.save(new Channel(channel.getName(), channel.getDescription(), channel.getCreatedTime()));
     }
 
     //PUT http://localhost:8080/api/v1/channels/{channelId}
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public void update(@Valid @RequestBody Channel updChannel, @PathVariable long id)
         throws ChannelNotFoundException{
         Optional<Channel> channelData = channelRepository.findById(id);
@@ -55,7 +55,7 @@ public class ChannelController {
     }
 
     //DELETE http://localhost:8080/api/v1/channels/{channelId}
-    @GetMapping("/{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
         if(channelRepository.existsById(id)){
             channelRepository.deleteById(id);

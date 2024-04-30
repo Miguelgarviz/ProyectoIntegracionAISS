@@ -34,13 +34,13 @@ public class CommentController {
     }
 
     // POST http://localhost:8080/api/v1/comments
-    @GetMapping
+    @PostMapping
     public Comment create(@Valid @RequestBody Comment comment){
         return repository.save(new Comment(comment.getText(),comment.getCreatedOn(),comment.getAuthor()));
     }
 
     // PUT http://localhost:8080/api/v1/comments/{commentId}
-    @GetMapping("/{id}")
+    @PutMapping("/{id}")
     public Comment update(@Valid @RequestBody Comment comment, @PathVariable long id)
             throws CommentNotFoundException{
         Optional<Comment> opComment = repository.findById(id);

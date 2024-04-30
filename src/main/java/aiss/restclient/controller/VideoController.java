@@ -34,7 +34,7 @@ public class VideoController {
     }
 
     // POST http://localhost:8080/api/v1/videos
-    @GetMapping
+    @PostMapping
     public Video create(@Valid @RequestBody Video video){
         return videoRespository.save(new Video(video.getName(),video.getDescription(),video.getReleaseTime()));
     }
