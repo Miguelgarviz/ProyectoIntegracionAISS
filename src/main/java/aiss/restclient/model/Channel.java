@@ -1,8 +1,9 @@
 package aiss.restclient.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,22 @@ public class Channel {
     @NotEmpty(message = "Please provide a name")
     private String name;
 
-    @Column(name = "description")
+
     @NotEmpty(message = "Please provide a description")
+    @Column(columnDefinition="TEXT")
     private String description;
 
-    @Column(name = "createdTime")
+    @JsonProperty("createdTime")
     @NotEmpty(message = "Please provide a created time")
     private String createdTime;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "channel_id")
-    private List<Video> videoList;
+    @JsonProperty("videos")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "channelId")
+    @NotNull(message = "Channel videos cannot be null")
+    private List<Video> videos;
+
+    private String variable;
 
     public Channel(){
 
@@ -39,7 +45,7 @@ public class Channel {
         this.name = name;
         this.description = description;
         this.createdTime = createdTime;
-        this.videoList = new ArrayList<>();
+        this.videos = new ArrayList<>();
     }
 
     public String getName() {
@@ -67,10 +73,10 @@ public class Channel {
     }
 
     public List<Video> getVideoList() {
-        return videoList;
+        return videos;
     }
 
     public void setVideoList(List<Video> videoList) {
-        this.videoList = videoList;
+        this.videos = videoList;
     }
 }

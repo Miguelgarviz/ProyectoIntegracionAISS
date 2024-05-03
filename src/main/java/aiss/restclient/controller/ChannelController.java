@@ -49,7 +49,7 @@ public class ChannelController {
             channel.getVideoList().add(vid);
         }
          */
-        return channel;
+        return newChannel;
     }
 
     //PUT http://localhost:8080/api/v1/channels/{channelId}

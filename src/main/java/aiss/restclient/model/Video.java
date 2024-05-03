@@ -27,6 +27,7 @@ public class Video {
     @NotEmpty(message = "Please provide a release time")
     private String releaseTime;
 
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "video_id")
     private List<Caption> captionList;
