@@ -1,8 +1,7 @@
 package aiss.restclient.controller;
 
 import aiss.restclient.exception.ChannelNotFoundException;
-import aiss.restclient.model.Channel;
-import aiss.restclient.model.Video;
+import aiss.restclient.model.*;
 import aiss.restclient.repository.ChannelRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,14 @@ public class ChannelController {
 
     @Autowired
     VideoController videoController;
+
+    @Autowired
+    CaptionController captionController;
+    @Autowired
+    CommentController commentController;
+
+    @Autowired
+    UserController userController;
 
     //GET http://localhost:8080/api/v1/channels
     @GetMapping
@@ -41,14 +48,21 @@ public class ChannelController {
     @PostMapping
     public Channel create(@Valid @RequestBody Channel newChannel){
         Channel channel = channelRepository.save(new Channel(newChannel.getName(), newChannel.getDescription(), newChannel.getCreatedTime()));
-        System.out.println("Channel created: " + newChannel.getVideoList());
-        /*
         List<Video> newVideos = newChannel.getVideoList();
         for(Video video : newVideos){
             Video vid = videoController.create(new Video(video.getName(),video.getDescription(),video.getReleaseTime()));
+            if(video.getCaptionList() != null){
+                video.getCaptionList().forEach(caption -> vid.getCaptionList().add(captionController.create(new Caption(caption.getName(),caption.getLanguage()))));
+            }
+            video.getComments().forEach(comment -> {
+                User newUser = comment.getAuthor();
+                System.out.println();
+                System.out.println(newUser.getName() + "//" + newUser.getUser_link());
+                System.out.println(newUser.getPicture_link() + " ## ");
+                vid.getComments().add(commentController.create(new Comment(comment.getText(), comment.getCreatedOn(), userController.create(new User(newUser.getName(), newUser.getUser_link(), newUser.getPicture_link())))));
+            });
             channel.getVideoList().add(vid);
         }
-         */
         return newChannel;
     }
 
