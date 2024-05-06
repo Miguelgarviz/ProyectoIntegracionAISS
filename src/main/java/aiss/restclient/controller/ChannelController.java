@@ -2,11 +2,13 @@ package aiss.restclient.controller;
 
 import aiss.restclient.exception.ChannelNotFoundException;
 import aiss.restclient.model.*;
-import aiss.restclient.repository.ChannelRepository;
+import aiss.restclient.repository.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,15 +20,15 @@ public class ChannelController {
     ChannelRepository channelRepository;
 
     @Autowired
-    VideoController videoController;
+    VideoRespository videoRepository;
 
     @Autowired
-    CaptionController captionController;
+    CaptionRepository captionRepository;
     @Autowired
-    CommentController commentController;
+    CommentRepository commentRepository;
 
     @Autowired
-    UserController userController;
+    UserRepository userRepository;
 
     //GET http://localhost:8080/api/v1/channels
     @GetMapping
@@ -46,24 +48,15 @@ public class ChannelController {
 
     //POST http://localhost:8080/api/v1/channels
     @PostMapping
-    public Channel create(@Valid @RequestBody Channel newChannel){
-        Channel channel = channelRepository.save(new Channel(newChannel.getName(), newChannel.getDescription(), newChannel.getCreatedTime()));
-        List<Video> newVideos = newChannel.getVideoList();
-        for(Video video : newVideos){
-            Video vid = videoController.create(new Video(video.getName(),video.getDescription(),video.getReleaseTime()));
-            if(video.getCaptionList() != null){
-                video.getCaptionList().forEach(caption -> vid.getCaptionList().add(captionController.create(new Caption(caption.getName(),caption.getLanguage()))));
-            }
-            video.getComments().forEach(comment -> {
-                User newUser = comment.getAuthor();
-                System.out.println();
-                System.out.println(newUser.getName() + "//" + newUser.getUser_link());
-                System.out.println(newUser.getPicture_link() + " ## ");
-                vid.getComments().add(commentController.create(new Comment(comment.getText(), comment.getCreatedOn(), userController.create(new User(newUser.getName(), newUser.getUser_link(), newUser.getPicture_link())))));
-            });
-            channel.getVideoList().add(vid);
-        }
-        return newChannel;
+    @ResponseStatus(code = HttpStatus.CREATED, reason = "Channel created successfully")
+    public Channel create(@Valid @RequestBody Channel newChannel) {
+        Channel channel = new Channel();
+        channel.setId(newChannel.getId());
+        channel.setName(newChannel.getName());
+        channel.setDescription(newChannel.getDescription());
+        channel.setCreatedTime(newChannel.getCreatedTime());
+        channel.setVideoList(newChannel.getVideoList());
+        return channelRepository.save(channel);
     }
 
     //PUT http://localhost:8080/api/v1/channels/{channelId}

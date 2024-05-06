@@ -1,5 +1,7 @@
 package aiss.restclient.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -21,6 +23,7 @@ public class Comment {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "author_id")
+    @JsonIgnore
     private User author;
 
     public Comment(){

@@ -1,5 +1,6 @@
 package aiss.restclient.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +29,7 @@ public class Video {
     private String releaseTime;
 
 
+    @JsonProperty("captionList")
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "video_id")
     private List<Caption> captionList;

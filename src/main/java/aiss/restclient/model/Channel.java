@@ -13,8 +13,8 @@ import java.util.List;
 public class Channel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @JsonProperty("id")
+    private String id;
 
     @Column(name = "name")
     @NotEmpty(message = "Please provide a name")
@@ -35,7 +35,6 @@ public class Channel {
     @NotNull(message = "Channel videos cannot be null")
     private List<Video> videos;
 
-    private String variable;
 
     public Channel(){
 
@@ -45,7 +44,6 @@ public class Channel {
         this.name = name;
         this.description = description;
         this.createdTime = createdTime;
-        this.videos = new ArrayList<>();
     }
 
     public String getName() {
@@ -78,5 +76,13 @@ public class Channel {
 
     public void setVideoList(List<Video> videoList) {
         this.videos = videoList;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
