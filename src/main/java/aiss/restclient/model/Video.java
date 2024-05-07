@@ -5,48 +5,49 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Juan C. Alonso
+ */
 @Entity
-@Table(name = "video")
+@Table(name = "Video")
 public class Video {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @JsonProperty("id")
+    private String id;
 
-    @Column(name = "name")
-    @NotEmpty(message = "Please provide a name")
+    @JsonProperty("name")
+    @NotEmpty(message = "Video name cannot be empty")
     private String name;
 
-    @Column(name = "description")
-    @NotNull(message = "description can not be null")
+    @JsonProperty("description")
+    @Column(columnDefinition="TEXT")
     private String description;
 
-    @Column(name = "releaseTime")
-    @NotEmpty(message = "Please provide a release time")
+    @JsonProperty("releaseTime")
+    @NotEmpty(message = "Video release time cannot be empty")
     private String releaseTime;
 
-
-    @JsonProperty("captionList")
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "video_id")
-    private List<Caption> captionList;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "video_id")
+    @JsonProperty("comments")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "videoId")
+    @NotNull(message = "Video comments cannot be null")
     private List<Comment> comments;
 
-    public Video(){
+    @JsonProperty("captions")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "videoId")
+    @NotNull(message = "Video captions cannot be null")
+    private List<Caption> captions;
 
+    public String getId() {
+        return id;
     }
-    public Video(String name, String description, String releaseTime){
-        this.name = name;
-        this.description = description;
-        this.releaseTime = releaseTime;
-        this.captionList = new ArrayList<>();
-        this.comments = new ArrayList<>();
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -73,19 +74,31 @@ public class Video {
         this.releaseTime = releaseTime;
     }
 
-    public List<Caption> getCaptionList() {
-        return captionList;
-    }
-
-    public void setCaptionList(List<Caption> captionList) {
-        this.captionList = captionList;
-    }
-
     public List<Comment> getComments() {
         return comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<Caption> getCaptions() {
+        return captions;
+    }
+
+    public void setCaptions(List<Caption> captions) {
+        this.captions = captions;
+    }
+
+    @Override
+    public String toString() {
+        return "Video{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseTime='" + releaseTime + '\'' +
+                ", comments=" + comments +
+                ", captions=" + captions +
+                '}';
     }
 }

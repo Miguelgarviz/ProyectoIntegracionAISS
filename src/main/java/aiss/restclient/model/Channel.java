@@ -8,25 +8,27 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Juan C. Alonso
+ */
 @Entity
-@Table(name = "channel")
+@Table(name = "Channel")
 public class Channel {
 
     @Id
     @JsonProperty("id")
     private String id;
 
-    @Column(name = "name")
-    @NotEmpty(message = "Please provide a name")
+    @JsonProperty("name")
+    @NotEmpty(message = "Channel name cannot be empty")
     private String name;
 
-
-    @NotEmpty(message = "Please provide a description")
+    @JsonProperty("description")
     @Column(columnDefinition="TEXT")
     private String description;
 
     @JsonProperty("createdTime")
-    @NotEmpty(message = "Please provide a created time")
+    @NotEmpty(message = "Channel creation time cannot be empty")
     private String createdTime;
 
     @JsonProperty("videos")
@@ -35,15 +37,16 @@ public class Channel {
     @NotNull(message = "Channel videos cannot be null")
     private List<Video> videos;
 
-
-    public Channel(){
-
+    public Channel() {
+        this.videos = new ArrayList<>();
     }
 
-    public Channel(String name, String description, String createdTime){
-        this.name = name;
-        this.description = description;
-        this.createdTime = createdTime;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -70,19 +73,22 @@ public class Channel {
         this.createdTime = createdTime;
     }
 
-    public List<Video> getVideoList() {
+    public List<Video> getVideos() {
         return videos;
     }
 
-    public void setVideoList(List<Video> videoList) {
-        this.videos = videoList;
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "Channel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", createdTime='" + createdTime + '\'' +
+                ", videos=" + videos +
+                '}';
     }
 }

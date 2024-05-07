@@ -25,7 +25,7 @@ public class CaptionController {
 
     //GET http://localhost:8080/api/v1/captions/{captionId}
     @GetMapping("/{id}")
-    public Caption findOne(@PathVariable long id) throws CaptionNotFoundException {
+    public Caption findOne(@PathVariable String id) throws CaptionNotFoundException {
         Optional<Caption> caption = captionRepository.findById(id);
         if(caption.isEmpty()){
             throw new CaptionNotFoundException();
@@ -36,12 +36,12 @@ public class CaptionController {
     //POST http://localhost:8080/api/v1/captions
     @PostMapping
     public Caption create(@Valid @RequestBody Caption caption){
-        return captionRepository.save(new Caption(caption.getName(), caption.getLanguage()));
+        return captionRepository.save(caption);
     }
 
     //PUT http://localhost:8080/api/v1/captions/{captionId}
     @PutMapping("/{id}")
-    public void update(@Valid @RequestBody Caption updCaption, @PathVariable long id)
+    public void update(@Valid @RequestBody Caption updCaption, @PathVariable String id)
         throws CaptionNotFoundException{
         Optional<Caption> opCaption = captionRepository.findById(id);
 
@@ -56,7 +56,7 @@ public class CaptionController {
 
     //DELETE http://localhost:8080/api/v1/captions/{captionId}
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id){
+    public void delete(@PathVariable String id){
         if(captionRepository.existsById(id)){
             captionRepository.deleteById(id);
         }

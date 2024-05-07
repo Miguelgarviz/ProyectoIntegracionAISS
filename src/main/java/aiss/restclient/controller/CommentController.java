@@ -25,7 +25,7 @@ public class CommentController {
 
     // GET http://localhost:8080/api/v1/comments/{commentId}
     @GetMapping("/{id}")
-    public Comment findOne(@PathVariable long id) throws CommentNotFoundException {
+    public Comment findOne(@PathVariable String id) throws CommentNotFoundException {
         Optional<Comment> optionalComment = repository.findById(id);
         if (optionalComment.isEmpty()) {
             throw new CommentNotFoundException();
@@ -36,12 +36,12 @@ public class CommentController {
     // POST http://localhost:8080/api/v1/comments
     @PostMapping
     public Comment create(@Valid @RequestBody Comment comment){
-        return repository.save(new Comment(comment.getText(),comment.getCreatedOn(),comment.getAuthor()));
+        return repository.save(comment);
     }
 
     // PUT http://localhost:8080/api/v1/comments/{commentId}
     @PutMapping("/{id}")
-    public Comment update(@Valid @RequestBody Comment comment, @PathVariable long id)
+    public Comment update(@Valid @RequestBody Comment comment, @PathVariable String id)
             throws CommentNotFoundException{
         Optional<Comment> opComment = repository.findById(id);
         if(opComment.isEmpty()){
@@ -56,7 +56,7 @@ public class CommentController {
 
     // DELETE http://localhost:8080/api/v1/comments/{commentId}
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id){
+    public void delete(@PathVariable String id){
         if (repository.existsById(id)) {
             repository.deleteById(id);
         }

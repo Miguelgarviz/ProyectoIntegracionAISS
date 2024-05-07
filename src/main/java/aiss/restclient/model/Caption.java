@@ -1,31 +1,34 @@
 package aiss.restclient.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+/**
+ * @author Juan C. Alonso
+ */
 @Entity
 @Table(name = "Caption")
 public class Caption {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @JsonProperty("id")
+    private String id;
 
-    @Column(name = "name")
-    @NotEmpty(message = "Please provide a name")
+    @JsonProperty("name")
     private String name;
 
-    @Column(name = "language")
-    @NotEmpty(message = "Please provide a language")
+    @JsonProperty("language")
     private String language;
 
-    public Caption(){
 
+    public String getId() {
+        return id;
     }
 
-    public Caption(String name, String language){
-        this.name = name;
-        this.language = language;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,5 +45,14 @@ public class Caption {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    @Override
+    public String toString() {
+        return "Caption{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", language='" + language + '\'' +
+                '}';
     }
 }

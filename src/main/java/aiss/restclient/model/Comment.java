@@ -1,39 +1,38 @@
 package aiss.restclient.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
+/**
+ * @author Juan C. Alonso
+ */
 @Entity
-@Table(name = "comment")
+@Table(name = "Comment")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @JsonProperty("id")
+    private String id;
 
-    @Column(name = "text")
-    @NotEmpty(message = "Please provide a text")
+    @JsonProperty("text")
+    @Column(columnDefinition="TEXT")
     private String text;
 
-    @Column(name = "createdOn")
-    @NotEmpty(message = "Please provide a created time")
+    @JsonProperty("createdOn")
     private String createdOn;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "author_id")
-    @JsonIgnore
+    @JsonProperty("author")
+    @OneToOne(cascade = CascadeType.ALL)
+    @NotNull(message = "Comment author cannot be null")
     private User author;
 
-    public Comment(){
-
+    public String getId() {
+        return id;
     }
 
-    public Comment(String text, String createdOn, User author){
-        this.text = text;
-        this.createdOn = createdOn;
-        this.author = author;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -59,5 +58,14 @@ public class Comment {
     public void setAuthor(User author) {
         this.author = author;
     }
-}
 
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id='" + id + '\'' +
+                ", text='" + text + '\'' +
+                ", createdOn='" + createdOn + '\'' +
+                ", author=" + author +
+                '}';
+    }
+}

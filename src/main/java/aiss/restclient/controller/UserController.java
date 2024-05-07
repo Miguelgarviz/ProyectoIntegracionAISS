@@ -36,7 +36,7 @@ public class UserController {
     // POST http://localhost:8080/api/v1/users
     @PostMapping
     public User create(@Valid @RequestBody User user){
-        return repository.save(new User(user.getName(), user.getUser_link(), user.getPicture_link()));
+        return repository.save(user);
     }
 
     // PUT http://localhost:8080/api/v1/users/{userId}

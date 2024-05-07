@@ -1,36 +1,41 @@
 package aiss.restclient.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 
+/**
+ * @author Juan C. Alonso
+ */
 @Entity
 @Table(name = "VMUser")
 public class User {
 
+    /*
+    * In order to avoid making the model unnecessarily complex, we establish a one-to-one relationship between Comment and
+    * User (instead of many-to-one). This causes an exception if we try to add a Comment to the DataBase that has been
+    * created by a User that already has a Comment in a previously stored Video. To avoid this exception, we automatically
+    * assign an id to each new User with AutoIncrement.
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name")
-    @NotEmpty(message = "Please provide a name")
+    @JsonProperty("name")
     private String name;
 
-    @Column(name = "user_link")
-    @NotEmpty(message = "Please provide a user link")
+    @JsonProperty("user_link")
     private String user_link;
 
-    @Column(name = "picture_link")
-    @NotEmpty(message = "Please provide a picture link")
+    @JsonProperty("picture_link")
     private String picture_link;
 
-    public User(){
-
+    public Long getId() {
+        return id;
     }
 
-    public User(String name, String user_link, String picture_link){
-        this.name = name;
-        this.user_link = user_link;
-        this.picture_link = picture_link;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -56,4 +61,15 @@ public class User {
     public void setPicture_link(String picture_link) {
         this.picture_link = picture_link;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", user_link='" + user_link + '\'' +
+                ", picture_link='" + picture_link + '\'' +
+                '}';
+    }
+
 }

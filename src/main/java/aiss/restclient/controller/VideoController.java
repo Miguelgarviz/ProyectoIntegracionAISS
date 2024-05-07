@@ -25,7 +25,7 @@ public class VideoController {
 
     // GET http://localhost:8080/api/v1/videos/{videoId}
     @GetMapping("/{id}")
-    public Video findOne(@PathVariable long id) throws VideoNotFoundException {
+    public Video findOne(@PathVariable String id) throws VideoNotFoundException {
         Optional<Video> optionalVideo = videoRespository.findById(id);
         if(optionalVideo.isEmpty()){
             throw new VideoNotFoundException();
@@ -36,12 +36,12 @@ public class VideoController {
     // POST http://localhost:8080/api/v1/videos
     @PostMapping
     public Video create(@Valid @RequestBody Video video){
-        return videoRespository.save(new Video(video.getName(),video.getDescription(),video.getReleaseTime()));
+        return videoRespository.save(video);
     }
 
     // PUT http://localhost:8080/api/v1/videos/{videoId}
     @PutMapping("/{id}")
-    public void update(@Valid @RequestBody Video video, @PathVariable long id)
+    public void update(@Valid @RequestBody Video video, @PathVariable String id)
         throws VideoNotFoundException{
         Optional<Video> opVideo = videoRespository.findById(id);
         if(opVideo.isEmpty()){
@@ -56,7 +56,7 @@ public class VideoController {
 
     // DELETE http://localhost:8080/api/v1/videos/{videoId}
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
+    public void delete(@PathVariable String id) {
         if(videoRespository.existsById(id)){
             videoRespository.deleteById(id);
         }
