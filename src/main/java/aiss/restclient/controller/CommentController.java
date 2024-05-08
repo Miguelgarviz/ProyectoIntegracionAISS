@@ -41,7 +41,7 @@ public class CommentController {
 
     // PUT http://localhost:8080/api/v1/comments/{commentId}
     @PutMapping("/{id}")
-    public Comment update(@Valid @RequestBody Comment comment, @PathVariable String id)
+    public void update(@Valid @RequestBody Comment comment, @PathVariable String id)
             throws CommentNotFoundException{
         Optional<Comment> opComment = repository.findById(id);
         if(opComment.isEmpty()){
@@ -51,7 +51,7 @@ public class CommentController {
         commentData.setText(comment.getText());
         commentData.setCreatedOn(comment.getCreatedOn());
         commentData.setAuthor(comment.getAuthor());
-        return repository.save(commentData);
+        repository.save(commentData);
     }
 
     // DELETE http://localhost:8080/api/v1/comments/{commentId}
