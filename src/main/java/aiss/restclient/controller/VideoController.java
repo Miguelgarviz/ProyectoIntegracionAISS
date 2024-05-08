@@ -19,7 +19,7 @@ public class VideoController {
 
     // GET http://localhost:8080/api/v1/videos
     @GetMapping
-    public List<Video> findAll(){
+    public List<Video> findAll() {
         return videoRespository.findAll();
     }
 
